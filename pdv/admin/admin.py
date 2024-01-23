@@ -15,6 +15,8 @@ from kivy.lang import Builder
 from sqlqueries import QueriesSQLite
 from datetime import datetime, timedelta
 import csv
+from pathlib import Path
+import os
 
 Builder.load_file('admin/admin.kv')
 
@@ -164,7 +166,7 @@ class ProductoPopup(Popup):
         alert2=''
         validado={}
         if not producto_codigo:
-            alert1+='Codigo, '
+            alert1+='Codigo. '
             validado['codigo']=False
         else:
             try:
@@ -180,21 +182,9 @@ class ProductoPopup(Popup):
         else:
             validado['nombre']=producto_nombre.lower()
         
-        if not producto_cantidad:
-            alert1+='Cantidad. '
-            validado['cantidad']=False
-        else:
-            try:
-                numeric=int(producto_cantidad)
-                validado['cantidad']=producto_cantidad
-            except:
-                alert2+='Cantidad no valida. '
-                validado['cantidad']=False
-
         if not producto_precio:
             alert1+='Precio. '
             validado['precio']=False
-        
         else:
             try:
                 numeric=float(producto_precio)
@@ -202,6 +192,18 @@ class ProductoPopup(Popup):
             except:
                 alert2+='Precio no valido. '
                 validado['precio']=False
+
+        if not producto_cantidad:
+            alert1+='Cantidad. '
+            validado['cantidad']=False
+        
+        else:
+            try:
+                numeric=int(producto_cantidad)
+                validado['cantidad']=producto_cantidad
+            except:
+                alert2+='Cantidad no valido. '
+                validado['cantidad']=False
 
         valores=list(validado.values())
 
